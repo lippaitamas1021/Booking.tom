@@ -18,6 +18,12 @@ public class RoomService {
 
     private final ModelMapper modelMapper;
 
+    public RoomDto saveRoom(CreateRoomCommand command) {
+        Room room = new Room(command.getId(), command.getRoomNumber(), command.getGuests());
+        Room result = roomRepository.save(room);
+        return modelMapper.map(result, RoomDto.class);
+    }
+
     public List<RoomDto> listRooms() {
         List<Room> rooms = roomRepository.findAll();
         Type targetType = new TypeToken<List<RoomDto>>(){}.getType();
@@ -26,14 +32,6 @@ public class RoomService {
 
     public RoomDto findRoomById(long id) {
         Room room = roomRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(id, "Room"));
-        return modelMapper.map(room, RoomDto.class);
-    }
-
-    public RoomDto saveRoom(Long id, CreateRoomCommand command) {
-        Guest guest = guestRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(id, "Guest"));
-        Room room = new Room(command.getId(), command.getRoomNumber(), command.getGuests());
-        room.addGuests(guest);
-        roomRepository.save(room);
         return modelMapper.map(room, RoomDto.class);
     }
 
@@ -54,6 +52,4 @@ public class RoomService {
     public void deleteAllRooms() {
         roomRepository.deleteAll();
     }
-
-
 }
