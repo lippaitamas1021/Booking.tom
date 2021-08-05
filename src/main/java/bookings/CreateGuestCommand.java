@@ -19,11 +19,15 @@ public class CreateGuestCommand {
     @Schema(description = "Name of the guest", example = "Mila Kunis")
     private String name;
 
-    @NotNull
+//    @NotNull
     @Schema(description = "Room number of the guest", example = "H11")
     private Room room;
 
     public CreateGuestCommand(String name) {
         this.name = name;
+    }
+
+    public CreateGuestCommand(Room room) {
+        this.room = room;
     }
 }
