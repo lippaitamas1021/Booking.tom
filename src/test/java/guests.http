@@ -1,0 +1,53 @@
+DELETE http://localhost:8080/api/guests
+
+###
+
+DELETE http://localhost:8080/api/guests/2
+
+###
+
+PUT http://localhost:8080/api/guests/2
+Content-Type: application/json
+
+{
+"name": "Kapás Boglárka"
+}
+
+###
+
+POST http://localhost:80/api/guests/2/rooms
+Content-Type: application/json
+
+{
+"roomNumber": "H2"
+}
+
+###
+
+POST http://localhost:8080/api/guests
+Content-Type: application/json
+
+{
+"name": "Margot Robbie",
+  "room": ""
+}
+
+###
+
+POST http://localhost:8080/api/guests
+Content-Type: application/json
+
+{
+"name": "Mila Kunis",
+  "room": "H1"
+}
+
+###
+
+GET http://localhost:8080/api/guests/1
+Accept: application/json
+
+###
+
+GET http://localhost:8080/api/guests
+Accept: application/json

@@ -1,11 +1,10 @@
-package bookings;
+package bookings.guests;
 
+import bookings.rooms.Room;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "guests")
@@ -18,14 +17,19 @@ public class Guest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotBlank
     private String name;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "rooms_id")
+    @ManyToOne
     private Room room;
 
     public Guest(String name) {
         this.name = name;
     }
+
+    public Guest(String name, Room room) {
+        this.name = name;
+        this.room = room; }
+
+    public boolean hasNoRoom() {
+        return room==null; }
 }

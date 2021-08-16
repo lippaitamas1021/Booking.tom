@@ -1,5 +1,9 @@
-package bookings;
+package bookings.guests;
 
+import bookings.rooms.AddRoomCommand;
+import bookings.EntityNotFoundException;
+import bookings.rooms.Room;
+import bookings.rooms.RoomRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -20,47 +24,44 @@ public class GuestService {
     private final RoomRepository roomRepository;
 
     public List<GuestDto> listGuests(Optional<String> name) {
-        List<Guest> guests = guestRepository.findAll();
         Type targetListType = new TypeToken<List<GuestDto>>(){}.getType();
-        return modelMapper.map(guests, targetListType);
-    }
+        return modelMapper.map(guestRepository.findAll(), targetListType); }
+
+
+    public GuestDto findGuestById(long id) {
+        return modelMapper.map(guestRepository.findById(id), GuestDto.class); }
+
 
     public GuestDto saveGuest(CreateGuestCommand command) {
         Guest guest = new Guest(command.getName());
         Guest result = guestRepository.save(guest);
-        return modelMapper.map(result, GuestDto.class);
-    }
+        return modelMapper.map(result, GuestDto.class); }
+
 
     @Transactional
-    public GuestDto addRoomsById(Long id, AddRoomCommand command) {
+    public GuestDto addRoomById(Long id, AddRoomCommand command) {
         Guest guest = guestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(id, "Guest"));
         Room room = new Room(command.getRoomNumber());
-        guest.setRoom(room);
         roomRepository.save(room);
-        return modelMapper.map(guest, GuestDto.class);
-    }
+        guest.setRoom(room);
+        return modelMapper.map(guest, GuestDto.class); }
 
-    public void deleteGuestById(Long id) {
-        if(!guestRepository.existsById(id)) {
-            throw new EntityNotFoundException(id, "Guest");
-        }
-        guestRepository.deleteById(id);
-    }
-
-    public GuestDto findGuestById(Long id) {
-        Guest guest = guestRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id, "Guest"));
-        return modelMapper.map(guest, GuestDto.class);
-    }
 
     @Transactional
     public GuestDto updateGuestById(long id, UpdateGuestCommand command) {
         Guest guest = guestRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(id, "Guest"));
         guest.setName(command.getName());
-        return modelMapper.map(guest, GuestDto.class);
-    }
+        return modelMapper.map(guest, GuestDto.class); }
+
+
+    public void deleteGuestById(Long id) {
+        if(!guestRepository.existsById(id)) {
+            throw new EntityNotFoundException(id, "Guest");
+        }
+        guestRepository.deleteById(id); }
+
 
     public void deleteAll() {
-        guestRepository.deleteAll();
-    }
+        guestRepository.deleteAll(); }
 }

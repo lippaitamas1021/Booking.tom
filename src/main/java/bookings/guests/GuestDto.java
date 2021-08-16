@@ -1,4 +1,4 @@
-package bookings;
+package bookings.guests;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class GuestDto {
 
     private Long id;
+
     private String name;
-    private Room room;
 }
