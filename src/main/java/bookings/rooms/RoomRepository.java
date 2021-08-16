@@ -1,4 +1,4 @@
-package bookings;
+package bookings.rooms;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

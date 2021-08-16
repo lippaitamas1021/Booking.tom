@@ -1,0 +1,52 @@
+DELETE http://localhost:8080/api/rooms
+
+###
+
+DELETE http://localhost:8080/api/rooms/1
+
+###
+
+PUT http://localhost:8080/api/rooms/2/rooms
+Content-Type: application/json
+
+{
+"roomNumber": "H5"
+}
+
+###
+
+POST http://localhost:8080/api/rooms/2/guests
+Content-Type: application/json
+
+{
+"name": "Jakabos Zsuszanna",
+  "room": "H4"
+}
+
+###
+
+POST http://localhost:8080/api/rooms
+Content-Type: application/json
+
+{
+"roomNumber": "H4"
+}
+
+###
+
+POST http://localhost:8080/api/rooms
+Content-Type: application/json
+
+{
+"roomNumber": "H3"
+}
+
+###
+
+GET http://localhost:8080/api/rooms/1
+Accept: application/json
+
+###
+
+GET http://localhost:8080/api/rooms
+Accept: application/json

@@ -1,10 +1,7 @@
-package bookings;
+package bookings.rooms;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
+import bookings.guests.Guest;
+import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +15,13 @@ public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     private String roomNumber;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<Guest> guests;
+    @EqualsAndHashCode.Exclude
+    private List<Guest> guests = new ArrayList<>();
 
     public Room(String roomNumber) {
         this.roomNumber = roomNumber;
@@ -32,6 +29,5 @@ public class Room {
 
     public void addGuests(Guest guest) {
         guests.add(guest);
-        guest.setRoom(this);
-    }
+        guest.setRoom(this); }
 }

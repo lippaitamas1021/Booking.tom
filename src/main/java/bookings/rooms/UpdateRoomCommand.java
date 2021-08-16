@@ -1,4 +1,4 @@
-package bookings;
+package bookings.rooms;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -11,9 +11,9 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 @Validated
-public class AddRoomCommand {
+public class UpdateRoomCommand {
 
-    @NotBlank
-    @Schema(description = "Number of the room", example = "H11")
+    @NotBlank(message = "Room number must be completed")
+    @Schema(description = "Room number of the guest", example = "H11")
     private String roomNumber;
 }
