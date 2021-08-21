@@ -15,7 +15,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:80/api/guests/2/rooms
+POST http://localhost:80/api/guests/3/rooms
 Content-Type: application/json
 
 {

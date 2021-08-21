@@ -47,7 +47,7 @@ public class GuestController {
 
     @PostMapping("/{id}/rooms")
     @Tag(name = "POST")
-    @Operation(summary = "Adding rooms", description = "This option is for adding rooms to the guest")
+    @Operation(summary = "Adding room", description = "This option is for adding a room to the guest")
     public GuestDto addRoom(@PathVariable("id") long id,  @Valid @RequestBody AddRoomCommand command) {
         return guestService.addRoomById(id, command); }
 
