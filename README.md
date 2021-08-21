@@ -29,7 +29,7 @@ verziójú JAVA-ban íródott.
     - guests, azaz a szobában tartózkodó vendégek listája
     
 **Kapcsolat:**
-A két entitás kétirányú egy-több kapcsolatban áll egymással, hiszen egy zobához több vendég is tartozhat.
+A két entitás kétirányú egy-több kapcsolatban áll egymással, hiszen egy szobához több vendég is tartozhat.
 A vendégek adattáblája külső kulcsként tartalmazza a szoba egyedi azonosítóját.
 
 **Felépítés**: 

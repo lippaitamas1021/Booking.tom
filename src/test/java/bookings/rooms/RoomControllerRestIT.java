@@ -13,7 +13,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
 import java.util.List;
-import java.util.Objects;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -40,9 +39,7 @@ public class RoomControllerRestIT {
         template.postForObject("/api/rooms", new CreateRoomCommand("H2"), RoomDto.class);
         template.postForObject("/api/rooms", new CreateRoomCommand("H3"), RoomDto.class);
         List<RoomDto> rooms = template.exchange("/api/rooms",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<RoomDto>>() {}).getBody();
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<RoomDto>>() {}).getBody();
         assertThat(rooms).extracting(RoomDto::getRoomNumber).containsExactly("H1", "H2", "H3"); }
 
 
@@ -51,10 +48,7 @@ public class RoomControllerRestIT {
     void findRoomByIdTest() {
         RoomDto roomDto = template.postForObject("/api/rooms", new CreateRoomCommand("H1"), RoomDto.class);
         RoomDto result = template.exchange("/api/rooms/" + roomDto.getId(),
-                HttpMethod.GET,
-                null,
-                RoomDto.class)
-                .getBody();
+                HttpMethod.GET, null, RoomDto.class).getBody();
         assert result != null;
         assertEquals("H1", result.getRoomNumber()); }
 
@@ -64,10 +58,7 @@ public class RoomControllerRestIT {
     void findRoomByNameTest() {
         template.postForObject("/api/rooms", new CreateRoomCommand("H1"), RoomDto.class);
         List<RoomDto> result = template.exchange("/api/rooms?name=H1",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<RoomDto>>() {})
-                .getBody();
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<RoomDto>>() {}).getBody();
         assert result != null;
         assertEquals(1, result.size()); }
 
@@ -76,24 +67,17 @@ public class RoomControllerRestIT {
     @DisplayName(value = "Adding guest to the romm")
     void addGuestTest() {
         RoomDto room = template.postForObject("/api/rooms", new CreateRoomCommand("H1"), RoomDto.class);
-        RoomDto result = template.postForObject("/api/rooms/{id}/guests",
-                new CreateGuestCommand("Mila Kunis", new Room("H1")),
-                RoomDto.class,
-                room.getId());
+        RoomDto result = template.postForObject("/api/rooms/" + room.getId() + "/guests",
+                new CreateGuestCommand("Mila Kunis", new Room("H1")), RoomDto.class, room.getId());
         assertThat(result.getGuests()).extracting(GuestDto::getName).containsExactly("Mila Kunis"); }
 
 
     @Test
     @DisplayName(value = "Updating the room number")
     void updateRoomNumberTest() {
-        GuestDto guest = template.postForObject("/api/guests",
-                new CreateGuestCommand("Margot Robbie", new Room("H1")), GuestDto.class);
-        template.put("/api/rooms/" + guest.getId(), new UpdateRoomCommand("H2"));
-        RoomDto result = template.exchange("/api/rooms/" + guest.getId(),
-                HttpMethod.GET,
-                null,
-                RoomDto.class)
-                .getBody();
+        RoomDto room = template.postForObject("/api/rooms", new CreateRoomCommand("H1"), RoomDto.class);
+        template.put("/api/rooms/" + room.getId() + "/room", new UpdateRoomCommand("H2"));
+        RoomDto result = template.exchange("/api/rooms/" + room.getId(), HttpMethod.GET, null, RoomDto.class).getBody();
         assert result != null;
         assertEquals("H2", result.getRoomNumber()); }
 
@@ -111,9 +95,20 @@ public class RoomControllerRestIT {
         RoomDto roomDto = template.postForObject("/api/rooms", new CreateRoomCommand("H1"), RoomDto.class);
         template.delete("/api/rooms/" + roomDto.getId());
         List<RoomDto> result = template.exchange("/api/rooms",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<RoomDto>>(){})
-                .getBody();
-        assertTrue(Objects.requireNonNull(result).isEmpty()); }
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<RoomDto>>(){}).getBody();
+        assert result != null;
+        assertTrue(result.isEmpty()); }
+
+
+    @Test
+    @DisplayName(value = "Deleting all the rooms")
+    void deleteAllRoomsTest() {
+        template.postForObject("/api/rooms", new CreateRoomCommand("H1"), RoomDto.class);
+        template.postForObject("/api/rooms", new CreateRoomCommand("H2"), RoomDto.class);
+        template.postForObject("/api/rooms", new CreateRoomCommand("H3"), RoomDto.class);
+        template.delete("/api/rooms");
+        List<RoomDto> result = template.exchange("/api/rooms", HttpMethod.GET, null, new ParameterizedTypeReference<List<RoomDto>>(){}).getBody();
+        assert result != null;
+        assertTrue(result.isEmpty());
+    }
 }

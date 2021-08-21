@@ -18,8 +18,6 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
 
-    private final GuestRepository guestRepository;
-
     private final ModelMapper modelMapper;
 
 
@@ -29,10 +27,6 @@ public class RoomService {
 
     public RoomDto findRoom(long id) {
         return modelMapper.map(findRoomById(id), RoomDto.class); }
-
-
-//    public Guest findGuestById(long id) {
-//        return guestRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(id, "Guest")); }
 
 
     public RoomDto saveRoom(CreateRoomCommand command) {

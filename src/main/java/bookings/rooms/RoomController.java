@@ -51,7 +51,7 @@ public class RoomController {
         return roomService.addGuest(id, command); }
 
 
-    @PutMapping("/{id}/rooms")
+    @PutMapping("/{id}/room")
     @Tag(name = "PUT")
     @Operation(summary = "Updating room", description = "This option is for updating a room by ID")
     @ApiResponse(responseCode = "200", description = "Room has been updated")

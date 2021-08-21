@@ -1,4 +1,4 @@
 create table rooms (
     id bigint(10) not null auto_increment,
-    roomNumber varchar(255),
+    room_number varchar(255),
     primary key (id));

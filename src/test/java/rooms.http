@@ -6,7 +6,7 @@ DELETE http://localhost:8080/api/rooms/1
 
 ###
 
-PUT http://localhost:8080/api/rooms/2/rooms
+PUT http://localhost:8080/api/rooms/2/room
 Content-Type: application/json
 
 {
