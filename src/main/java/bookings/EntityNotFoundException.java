@@ -10,6 +10,4 @@ public class EntityNotFoundException extends AbstractThrowableProblem {
         super(URI.create("bookings/" + entity + "-not-found"),
                 "Entity not found",
                 Status.NOT_FOUND,
-                String.format("Entity '%s' with ID: '%d' not found", entity, id));
-    }
-}
+                String.format("Entity '%s' with ID: '%d' not found", entity, id));}}

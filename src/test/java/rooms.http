@@ -2,25 +2,24 @@ DELETE http://localhost:8080/api/rooms
 
 ###
 
-DELETE http://localhost:8080/api/rooms/1
+DELETE http://localhost:8080/api/rooms/31
 
 ###
 
-PUT http://localhost:8080/api/rooms/2/room
+PUT http://localhost:8080/api/rooms/33/guest
 Content-Type: application/json
 
 {
-"roomNumber": "H5"
+"id": 14
 }
 
 ###
 
-POST http://localhost:8080/api/rooms/2/guests
+POST http://localhost:8080/api/rooms/32/guest
 Content-Type: application/json
 
 {
-"name": "Jakabos Zsuszanna",
-  "room": "H4"
+"name": "Mila Kunis"
 }
 
 ###
@@ -43,7 +42,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/api/rooms/1
+GET http://localhost:8080/api/rooms/33
 Accept: application/json
 
 ###

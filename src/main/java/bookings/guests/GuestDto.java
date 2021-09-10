@@ -14,5 +14,4 @@ public class GuestDto {
 
     private String name;
 
-    private RoomDto room;
-}
+    private RoomDto room;}

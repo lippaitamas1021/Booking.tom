@@ -26,13 +26,6 @@ public class RoomControllerRestIT {
 
 
     @Test
-    @DisplayName(value = "Saving a new room")
-    void saveRoomTest() {
-        RoomDto result = template.postForObject("/api/rooms", new CreateRoomCommand("H1"), RoomDto.class);
-        assertEquals("H1", result.getRoomNumber());}
-
-
-    @Test
     @DisplayName(value = "Listing rooms")
     void listRoomsTest(){
         template.postForObject("/api/rooms", new CreateRoomCommand("H1"), RoomDto.class);
@@ -64,11 +57,18 @@ public class RoomControllerRestIT {
 
 
     @Test
-    @DisplayName(value = "Adding guest to the romm")
+    @DisplayName(value = "Saving a new room")
+    void saveRoomTest() {
+        RoomDto result = template.postForObject("/api/rooms", new CreateRoomCommand("H1"), RoomDto.class);
+        assertEquals("H1", result.getRoomNumber());}
+
+
+    @Test
+    @DisplayName(value = "Adding new guest to an existing room")
     void addGuestTest() {
         RoomDto room = template.postForObject("/api/rooms", new CreateRoomCommand("H1"), RoomDto.class);
-        RoomDto result = template.postForObject("/api/rooms/" + room.getId() + "/guests",
-                new CreateGuestCommand("Mila Kunis", new Room("H1")), RoomDto.class, room.getId());
+        RoomDto result = template.postForObject("/api/rooms/{id}/guest",
+                new AddNewGuestCommand("Mila Kunis"), RoomDto.class, room.getId());
         assertThat(result.getGuests()).extracting(GuestDto::getName).containsExactly("Mila Kunis"); }
 
 
@@ -76,7 +76,7 @@ public class RoomControllerRestIT {
     @DisplayName(value = "Updating the room number")
     void updateRoomNumberTest() {
         RoomDto room = template.postForObject("/api/rooms", new CreateRoomCommand("H1"), RoomDto.class);
-        template.put("/api/rooms/" + room.getId() + "/room", new UpdateRoomCommand("H2"));
+        template.put("/api/rooms/" + room.getId(), new UpdateRoomCommand("H2"));
         RoomDto result = template.exchange("/api/rooms/" + room.getId(), HttpMethod.GET, null, RoomDto.class).getBody();
         assert result != null;
         assertEquals("H2", result.getRoomNumber()); }
@@ -109,6 +109,4 @@ public class RoomControllerRestIT {
         template.delete("/api/rooms");
         List<RoomDto> result = template.exchange("/api/rooms", HttpMethod.GET, null, new ParameterizedTypeReference<List<RoomDto>>(){}).getBody();
         assert result != null;
-        assertTrue(result.isEmpty());
-    }
-}
+        assertTrue(result.isEmpty());}}

@@ -13,5 +13,4 @@ public class CreateRoomCommand {
 
     @NotBlank(message = "Room number must be completed")
     @Schema(description = "Number of the room", example = "H11")
-    private String roomNumber;
-}
+    private String roomNumber;}

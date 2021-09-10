@@ -1,6 +1,5 @@
 package bookings.rooms;
 
-import bookings.guests.CreateGuestCommand;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -9,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/rooms")
@@ -18,20 +18,18 @@ public class RoomController {
 
     private final RoomService roomService;
 
+
     @GetMapping
     @Tag(name = "GET")
     @Operation(summary = "Listing rooms", description = "This option is for listing all the rooms")
-    public List<RoomDto> listRooms() {
-        return roomService.listRooms();
-    }
+    public List<RoomDto> listRooms(Optional<String> roomNumber) {return roomService.listRooms(roomNumber);}
 
 
     @GetMapping("/{id}")
     @Tag(name = "GET")
     @Operation(summary = "Finding a room by ID", description = "This option is for finding a room by ID")
     @ApiResponse(responseCode = "404", description = "Room not found")
-    public RoomDto findRoomById(@PathVariable("id") long id) {
-        return roomService.findRoom(id); }
+    public RoomDto findRoomById(@PathVariable("id") long id) {return roomService.findRoomById(id); }
 
 
     @PostMapping
@@ -45,15 +43,23 @@ public class RoomController {
     }
 
 
-    @PostMapping("/{id}/guests")
-    @Operation(summary = "Adding guest", description = "This option is for adding a new guest to the room")
-    public RoomDto addGuest(@PathVariable("id") long id, @Valid @RequestBody CreateGuestCommand command) {
-        return roomService.addGuest(id, command); }
+    @PostMapping("/{id}/guest")
+    @Tag(name= "POST")
+    @Operation(summary = "Adding a new guest", description = "This option is for adding a new guest to the room")
+    public RoomDto addNewGuestToExistingRoom(@PathVariable("id") long id, @Valid @RequestBody AddNewGuestCommand command) {
+        return roomService.addNewGuestToExistingRoom(id, command); }
 
 
-    @PutMapping("/{id}/room")
+    @PutMapping("/{id}/guest")
     @Tag(name = "PUT")
-    @Operation(summary = "Updating room", description = "This option is for updating a room by ID")
+    @Operation(summary = "Adding an existing guest", description = "This option is for adding an existing guest to an existing room")
+    public RoomDto addExistingGuestToExistingRoom(@PathVariable("id") int id, @Valid @RequestBody AddExistingGuestCommand command) {
+        return roomService.addExistingGuestToExistingRoom(id, command);}
+
+
+    @PutMapping("/{id}")
+    @Tag(name = "PUT")
+    @Operation(summary = "Updating a room", description = "This option is for updating a room by ID")
     @ApiResponse(responseCode = "200", description = "Room has been updated")
     @ApiResponse(responseCode = "400", description = "Room update is not allowed")
     public RoomDto updateRoomById(@PathVariable("id") long id, @Valid @RequestBody UpdateRoomCommand command) {
@@ -78,5 +84,4 @@ public class RoomController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAllRooms() {
         roomService.deleteAllRooms();
-    }
-}
+    }}

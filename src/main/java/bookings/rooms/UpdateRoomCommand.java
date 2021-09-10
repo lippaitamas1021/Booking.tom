@@ -15,5 +15,4 @@ public class UpdateRoomCommand {
 
     @NotBlank(message = "Room number must be completed")
     @Schema(description = "Room number of the guest", example = "H11")
-    private String roomNumber;
-}
+    private String roomNumber;}

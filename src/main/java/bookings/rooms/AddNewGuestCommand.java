@@ -4,16 +4,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotBlank;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Validated
-public class AddRoomCommand {
+public class AddNewGuestCommand {
 
-    @NotBlank
-    @Schema(description = "Number of the room", example = "H11")
-    private String roomNumber;
-}
+    @NotBlank(message = "Name of the guest must be given")
+    @Schema(name = "Name of the guest", example = "Margot Robbie")
+    private String name;}

@@ -13,7 +13,6 @@ import javax.validation.constraints.NotBlank;
 @Validated
 public class UpdateGuestCommand {
 
-    @NotBlank
+    @NotBlank(message = "Name of the guest must be completed")
     @Schema(description = "Name of the guest", example = "Mila Kunis")
-    private String name;
-}
+    private String name;}

@@ -21,5 +21,4 @@ public class Application {
 	@Bean
 	public ObjectMapper objectMapper() {
 		return new ObjectMapper().findAndRegisterModules();
-	}
-}
+	}}

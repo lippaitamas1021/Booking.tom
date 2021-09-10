@@ -1,7 +1,7 @@
 package bookings.guests;
 
-import bookings.rooms.AddRoomCommand;
 import bookings.EntityNotFoundException;
+import bookings.rooms.CreateRoomCommand;
 import bookings.rooms.Room;
 import bookings.rooms.RoomRepository;
 import lombok.AllArgsConstructor;
@@ -29,19 +29,22 @@ public class GuestService {
 
 
     public GuestDto findGuestById(long id) {
-        return modelMapper.map(guestRepository.findById(id), GuestDto.class); }
+        return modelMapper.map(findGuest(id), GuestDto.class); }
+
+
+    public Guest findGuest(long id) {
+        return guestRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(id, "Guest"));}
 
 
     public GuestDto saveGuest(CreateGuestCommand command) {
         Guest guest = new Guest(command.getName());
-        Guest result = guestRepository.save(guest);
-        return modelMapper.map(result, GuestDto.class); }
+        guestRepository.save(guest);
+        return modelMapper.map(guest, GuestDto.class); }
 
 
     @Transactional
-    public GuestDto addRoomById(Long id, AddRoomCommand command) {
-        Guest guest = guestRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(id, "Guest"));
+    public GuestDto addRoomById(Long id, CreateRoomCommand command) {
+        Guest guest = findGuest(id);
         Room room = new Room(command.getRoomNumber());
         roomRepository.save(room);
         guest.setRoom(room);
@@ -50,9 +53,10 @@ public class GuestService {
 
     @Transactional
     public GuestDto updateGuestById(long id, UpdateGuestCommand command) {
-        Guest guest = guestRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(id, "Guest"));
+        Guest guest = findGuest(id);
         guest.setName(command.getName());
-        return modelMapper.map(guest, GuestDto.class); }
+        Guest result = guestRepository.save(guest);
+        return modelMapper.map(result, GuestDto.class); }
 
 
     public void deleteGuestById(Long id) {
@@ -63,5 +67,4 @@ public class GuestService {
 
 
     public void deleteAll() {
-        guestRepository.deleteAll(); }
-}
+        guestRepository.deleteAll(); }}

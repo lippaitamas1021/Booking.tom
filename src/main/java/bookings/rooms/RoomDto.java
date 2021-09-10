@@ -1,6 +1,7 @@
 package bookings.rooms;
 
 import bookings.guests.GuestDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,5 +16,5 @@ public class RoomDto {
 
     private String roomNumber;
 
-    private List<GuestDto> guests;
-}
+    @JsonBackReference
+    private List<GuestDto> guests;}
